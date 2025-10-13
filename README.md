@@ -84,3 +84,4 @@ Git que indicar qual contexto esta executando kubernetes
 
 `sudo apt install zoxide`
 # dotfiles
+# dotfiles
