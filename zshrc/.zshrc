@@ -6,8 +6,8 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="fino"
 plugins=(
 	git
-	# zsh-syntax-highlighting
-  # zsh-autosuggestions
+	zsh-syntax-highlighting
+  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -54,8 +54,8 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ---- Eza (better ls) -----
 alias ls="eza --icons=always"
@@ -92,14 +92,14 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Add kubectl completion 
-source <(kubectl completion zsh)
+# source <(kubectl completion zsh)
 
-# Ativar o kube-ps1
-source ~/.kube-ps1/kube-ps1.sh
-PROMPT='$(kube_ps1)'$PROMPT
-KUBE_PS1_PREFIX="("            # Adiciona um prefixo antes do contexto
-KUBE_PS1_SUFFIX=")"            # Adiciona um sufixo depois do contexto
-KUBE_PS1_SYMBOL_USE_IMG=true   # Usa um ícone para o cluster
+# # Ativar o kube-ps1
+# source ~/.kube-ps1/kube-ps1.sh
+# PROMPT='$(kube_ps1)'$PROMPT
+# KUBE_PS1_PREFIX="("            # Adiciona um prefixo antes do contexto
+# KUBE_PS1_SUFFIX=")"            # Adiciona um sufixo depois do contexto
+# KUBE_PS1_SYMBOL_USE_IMG=true   # Usa um ícone para o cluster
 
 export PATH="$HOME/.cargo/bin:$PATH"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
