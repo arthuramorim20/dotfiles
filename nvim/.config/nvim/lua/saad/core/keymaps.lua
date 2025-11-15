@@ -27,7 +27,7 @@ keymap.set("n", "<leader>nm", ":Noice<CR>", { desc = "View noice messages" })
 
 -- Mapeamentos básicos de LSP
 keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "go to definition" })
-keymap.set("n", "K", vim.lsp.buf.hover, { desc = "go to definition" })
+keymap.set("n", "K", vim.lsp.buf.hover, { desc = "hover highlights" })
 keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "go to definition" })
 keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "go to definition" })
 keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "go to definition" })

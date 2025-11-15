@@ -16,7 +16,7 @@ x = 10
 y = 10
 
 [font]
-size = 15
+size = 12
 
 [font.bold]
 family = "SauceCodePro Nerd Font"
