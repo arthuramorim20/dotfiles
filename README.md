@@ -31,11 +31,11 @@
 Esta coleção de dotfiles foi criada para proporcionar um ambiente de desenvolvimento Linux elegante, eficiente e altamente produtivo. Configurações cuidadosamente ajustadas para gerenciadores de janelas, terminais, editores e muito mais!
 
 **Ambiente atual:**
-- Sistema: Linux Mint
-- WM: i3/Hyprland
-- Terminal: Kitty/Warp
-- Editor: Neovim (NvChad)
-- Status Bar: Polybar/Waybar
+- Sistema: ArchLinux
+- WM: Hyprland
+- Terminal: Kitty
+- Editor: Neovim (Lazygit)
+- Status Bar: Waybar
 - Lançador: ULauncher
 - Compositor: Picom
 
