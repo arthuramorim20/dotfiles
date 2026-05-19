@@ -1,0 +1,48 @@
+---
+# Cross-platform setup: shell, tmux, nvim, kitty.
+# Symlinks dotfiles into the standard locations on both Arch and macOS.
+
+- name: Ensure ~/.config exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config"
+    state: directory
+    mode: '0755'
+
+- name: Link ~/.zshenv
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/zsh/.zshenv"
+    dest: "{{ ansible_env.HOME }}/.zshenv"
+    state: link
+    force: true
+
+- name: Link ~/.tmux.conf (fallback for tmux launched before XDG)
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/tmux/tmux.conf"
+    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    state: link
+    force: true
+
+- name: Link cross-platform ~/.config dirs
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.config/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - nvim
+    - kitty
+    - tmux
+
+- name: Install oh-my-zsh if missing
+  ansible.builtin.shell: |
+    RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+
+- name: Install tmux TPM if missing
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    depth: 1
+    version: master

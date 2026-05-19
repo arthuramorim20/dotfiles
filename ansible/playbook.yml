@@ -1,0 +1,38 @@
+---
+# Bootstrap this dotfiles repo on Arch Linux or macOS.
+#
+# Usage:
+#   ansible-playbook ansible/playbook.yml --check   # dry-run
+#   ansible-playbook ansible/playbook.yml --ask-become-pass
+#
+# OS routing:
+#   - Arch Linux  → installs the full desktop setup (Hyprland, pacman + AUR
+#                   + flatpak packages, systemd services, GTK dark mode).
+#   - macOS       → installs only the dev tooling: nvim, kitty, tmux, git,
+#                   node + insomnia. Links the relevant configs.
+
+- name: Bootstrap dotfiles
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    dotfiles_dir: "{{ ansible_env.HOME }}/dotfiles"
+    pkg_dir: "{{ ansible_env.HOME }}/dotfiles/packages"
+
+  pre_tasks:
+    - name: Fail on unsupported OS
+      ansible.builtin.fail:
+        msg: "Unsupported OS family: {{ ansible_os_family }} (expected Archlinux or Darwin)"
+      when: ansible_os_family not in ['Archlinux', 'Darwin']
+
+  tasks:
+    - name: Common setup (both Arch and macOS)
+      ansible.builtin.import_tasks: tasks/common.yml
+
+    - name: Arch Linux full setup
+      ansible.builtin.import_tasks: tasks/arch.yml
+      when: ansible_os_family == 'Archlinux'
+
+    - name: macOS minimal setup
+      ansible.builtin.import_tasks: tasks/macos.yml
+      when: ansible_os_family == 'Darwin'

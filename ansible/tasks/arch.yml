@@ -1,0 +1,181 @@
+# Full Arch Linux setup: Hyprland desktop, packages, services, GTK dark mode.
+
+# --- XDG_CONFIG_HOME bootstrap (so apps read configs from ~/dotfiles) ------
+
+- name: Ensure ~/.config/environment.d exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d"
+    state: directory
+    mode: "0755"
+
+- name: Write environment.d bootstrap (systemd user manager)
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d/dotfiles.conf"
+    mode: "0644"
+    content: |
+      XDG_CONFIG_HOME=${HOME}/dotfiles
+      ZDOTDIR=${HOME}/dotfiles/zsh
+
+- name: Append XDG bootstrap to ~/.profile (for sh login shells / sddm)
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.profile"
+    create: true
+    mode: "0644"
+    marker: "# {mark} dotfiles XDG bootstrap"
+    block: |
+      export XDG_CONFIG_HOME="$HOME/dotfiles"
+      export ZDOTDIR="$HOME/dotfiles/zsh"
+
+# --- Arch-specific config symlinks (for apps started before XDG is set) ----
+
+- name: Check existing Arch config dirs
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.config/{{ item }}"
+  loop:
+    - cava
+    - elephant
+    - fastfetch
+    - gtk-3.0
+    - gtk-4.0
+    - hypr
+    - hyprlock
+    - matugen
+    - rofi
+    - swaync
+    - walker
+    - waybar
+    - wlogout
+  register: arch_config_dirs
+
+- name: Link Arch-specific ~/.config dirs
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/{{ item.item }}"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/{{ item.item }}"
+    state: link
+  loop: "{{ arch_config_dirs.results }}"
+  when:
+    - not item.stat.exists or item.stat.islnk
+
+- name: Check if yay is installed
+  ansible.builtin.command: command -v yay
+  register: yay_check
+  changed_when: false
+  failed_when: false
+
+- name: Install yay-bin from AUR if missing
+  when: yay_check.rc != 0
+  block:
+    - name: Create temp dir for yay-bin
+      ansible.builtin.tempfile:
+        state: directory
+      register: yay_tmp
+
+    - name: Clone yay-bin AUR repo
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/yay-bin.git
+        dest: "{{ yay_tmp.path }}/yay-bin"
+        depth: 1
+        version: master
+
+    - name: Build and install yay-bin
+      ansible.builtin.command: makepkg -si --noconfirm
+      args:
+        chdir: "{{ yay_tmp.path }}/yay-bin"
+
+    - name: Clean up yay tempdir
+      ansible.builtin.file:
+        path: "{{ yay_tmp.path }}"
+        state: absent
+
+# --- packages -------------------------------------------------------------
+
+- name: Read pacman package list
+  ansible.builtin.set_fact:
+    pacman_packages: "{{ lookup('file', pkg_dir + '/pacman.txt').splitlines() | reject('match', '^\\s*(#|$)') | list }}"
+
+- name: Read AUR package list (excluding yay itself)
+  ansible.builtin.set_fact:
+    aur_packages: "{{ lookup('file', pkg_dir + '/aur.txt').splitlines() | reject('match', '^\\s*(#|$|yay$|yay-bin$)') | list }}"
+
+- name: Refresh pacman DBs and upgrade system
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  become: true
+
+- name: Install pacman packages
+  community.general.pacman:
+    name: "{{ pacman_packages }}"
+    state: present
+  become: true
+
+- name: Install AUR packages via yay
+  ansible.builtin.command: yay -S --needed --noconfirm {{ aur_packages | join(' ') }}
+  register: yay_install
+  changed_when: "'there is nothing to do' not in yay_install.stdout | lower"
+
+# --- flatpak --------------------------------------------------------------
+
+- name: Add flathub remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+- name: Read flatpak app list
+  ansible.builtin.set_fact:
+    flatpak_apps: "{{ lookup('file', pkg_dir + '/flatpak.txt').splitlines() | reject('match', '^\\s*(#|$)') | list }}"
+
+- name: Install flatpak apps
+  community.general.flatpak:
+    name: "{{ flatpak_apps }}"
+    remote: flathub
+    state: present
+
+# --- services -------------------------------------------------------------
+
+- name: Enable system services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+  become: true
+  loop:
+    - bluetooth.service
+    - cronie.service
+    - docker.service
+    - earlyoom.service
+    - grub-btrfsd.service
+    - NetworkManager.service
+    - sddm.service
+
+- name: Enable user services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    scope: user
+  loop:
+    - wireplumber.service
+
+# --- GNOME dark mode -----------------------------------------------------
+
+- name: Set GNOME color-scheme to prefer-dark
+  ansible.builtin.command: gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+  changed_when: false
+
+- name: Set GTK theme to Adwaita-dark
+  ansible.builtin.command: gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+  changed_when: false
+
+# --- default shell -------------------------------------------------------
+
+- name: Get current user's shell
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ ansible_facts['env']['USER'] }}"
+
+- name: Change default shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_facts['env']['USER'] }}"
+    shell: /usr/bin/zsh
+  become: true
+  when: getent_passwd[ansible_facts['env']['USER']][5] != '/usr/bin/zsh'

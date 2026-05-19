@@ -1,0 +1,3 @@
+io.neovim.nvim
+md.obsidian.Obsidian
+rest.insomnia.Insomnia

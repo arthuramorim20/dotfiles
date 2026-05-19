@@ -1,0 +1,15 @@
+antigravity
+brave-bin
+cider
+debtap
+elephant-all
+ngrok
+sddm-catppuccin-git
+terraform-ls
+ulauncher
+visual-studio-code-bin
+walker-bin
+whatsapp-for-linux-git
+wttrbar
+yay
+yay-debug

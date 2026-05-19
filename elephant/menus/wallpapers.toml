@@ -1,0 +1,13 @@
+name = "wallpapers"
+name_pretty = "Wallpapers"
+icon = "preferences-desktop-wallpaper"
+
+[[entries]]
+text = "wall-06.png"
+icon = "/home/thui/dotfiles/wallpapers/wall-06.png"
+actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/set-wallpaper.sh /home/thui/dotfiles/wallpapers/wall-06.png" }
+
+[[entries]]
+text = "wall-05.png"
+icon = "/home/thui/dotfiles/wallpapers/wall-05.png"
+actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/set-wallpaper.sh /home/thui/dotfiles/wallpapers/wall-05.png" }

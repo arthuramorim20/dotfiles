@@ -1,0 +1,44 @@
+---
+# macOS minimal setup: just the dev tools.
+# Brew formulae: nvim, tmux, git, node. Casks: kitty, insomnia.
+
+- name: Check if Homebrew is installed
+  ansible.builtin.command: command -v brew
+  register: brew_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Homebrew if missing
+  ansible.builtin.shell: |
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: brew_check.rc != 0
+  environment:
+    NONINTERACTIVE: "1"
+
+- name: Read brew formula list
+  ansible.builtin.set_fact:
+    brew_formulae: "{{ lookup('file', pkg_dir + '/brew.txt').splitlines() | reject('match', '^\\s*(#|$)') | list }}"
+
+- name: Read brew cask list
+  ansible.builtin.set_fact:
+    brew_casks: "{{ lookup('file', pkg_dir + '/brew-cask.txt').splitlines() | reject('match', '^\\s*(#|$)') | list }}"
+
+- name: Install brew formulae
+  community.general.homebrew:
+    name: "{{ brew_formulae }}"
+    state: present
+    update_homebrew: true
+
+- name: Install brew casks
+  community.general.homebrew_cask:
+    name: "{{ brew_casks }}"
+    state: present
+
+- name: Get current user's shell
+  ansible.builtin.command: dscl . -read /Users/{{ ansible_env.USER }} UserShell
+  register: mac_user_shell
+  changed_when: false
+
+- name: Change default shell to brew zsh
+  ansible.builtin.command: chsh -s /bin/zsh
+  when: "'/bin/zsh' not in mac_user_shell.stdout"
