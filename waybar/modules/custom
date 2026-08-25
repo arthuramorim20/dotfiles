@@ -1,0 +1,204 @@
+/* Upstream: https://github.com/JaKooLit */
+/* Waybar Modules - Custom Modules */
+/* Basically created to reduce the lines in Waybar Modules bank */
+/* NOTE: This is only for Custom Modules */
+/* Custom Modules like weather browser, tty, file manager at the beginning */
+
+{
+"custom/file_manager": {
+	"format": " ",
+	"on-click": "xdg-open . &",
+	"tooltip": true,
+	"tooltip-format": "File Manager",
+},
+
+"custom/tty": {
+	"format": " ",
+	"on-click": "kitty",
+	"tooltip": true,
+	"tooltip-format": "Launch Terminal",
+},
+
+"custom/browser": {
+	"format": " ",
+	"on-click": "xdg-open https://",
+	"tooltip": true,
+	"tooltip-format": "Launch Browser",
+},
+
+"custom/keyboard": {
+	"exec": "tr '[:lower:]' '[:upper:]' < $HOME/.cache/kb_layout",
+	"interval": 1,
+	"format": "{}",
+	"on-click": "$HOME/dotfiles/hypr/scripts/display/SwitchKeyboardLayout.sh --toggle",
+},
+
+"custom/mac-file": {
+	"format": "File",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/file.xml",
+	"menu-actions": {
+		"new_terminal": "kitty",
+		"file_manager": "dolphin",
+		"applications": "pkill rofi || rofi -show drun -modi run,drun,filebrowser,window",
+		"close_window": "hyprctl dispatch killactive"
+	}
+},
+
+"custom/mac-edit": {
+	"format": "Edit",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/edit.xml",
+	"menu-actions": {
+		"undo": "wtype -M ctrl -k z -m ctrl",
+		"redo": "wtype -M ctrl -M shift -k z -m shift -m ctrl",
+		"cut": "wtype -M ctrl -k x -m ctrl",
+		"copy": "wtype -M ctrl -k c -m ctrl",
+		"paste": "wtype -M ctrl -k v -m ctrl",
+		"select_all": "wtype -M ctrl -k a -m ctrl"
+	}
+},
+
+"custom/mac-view": {
+	"format": "View",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/view.xml",
+	"menu-actions": {
+		"fullscreen": "hyprctl dispatch fullscreen 0",
+		"floating": "hyprctl dispatch togglefloating",
+		"center": "hyprctl dispatch centerwindow"
+	}
+},
+
+"custom/mac-go": {
+	"format": "Go",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/go.xml",
+	"menu-actions": {
+		"previous_workspace": "hyprctl dispatch workspace e-1",
+		"next_workspace": "hyprctl dispatch workspace e+1",
+		"workspace_1": "hyprctl dispatch workspace 1",
+		"workspace_2": "hyprctl dispatch workspace 2",
+		"workspace_3": "hyprctl dispatch workspace 3",
+		"workspace_4": "hyprctl dispatch workspace 4",
+		"workspace_5": "hyprctl dispatch workspace 5"
+	}
+},
+
+"custom/mac-window": {
+	"format": "Window",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/window.xml",
+	"menu-actions": {
+		"next_window": "hyprctl dispatch cyclenext",
+		"previous_window": "hyprctl dispatch cyclenext prev",
+		"move_previous": "hyprctl dispatch movetoworkspace e-1",
+		"move_next": "hyprctl dispatch movetoworkspace e+1",
+		"close_window": "hyprctl dispatch killactive"
+	}
+},
+
+"custom/mac-help": {
+	"format": "Help",
+	"tooltip": false,
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/help.xml",
+	"menu-actions": {
+		"shortcuts": "kitty --class waybar-float --hold hyprctl binds",
+		"arch_wiki": "xdg-open https://wiki.archlinux.org",
+		"hyprland_wiki": "xdg-open https://wiki.hypr.land",
+		"waybar_docs": "xdg-open https://github.com/Alexays/Waybar/wiki"
+	}
+},
+
+"custom/active-app": {
+	"exec": "$HOME/dotfiles/waybar/scripts/active-app.sh",
+	"interval": 1,
+	"format": "<b>{}</b>",
+	"tooltip": false
+},
+
+"custom/spotlight": {
+	"format": "",
+	"on-click": "pkill rofi || rofi -show drun -modi run,drun,filebrowser,window",
+	"tooltip": true,
+	"tooltip-format": "Spotlight"
+},
+
+"custom/mac-clock": {
+	"exec": "date '+%a %b %-d  %-I:%M %p'",
+	"interval": 10,
+	"tooltip": false
+},
+
+"custom/lock": {
+	"format": "󰌾",
+	"on-click": "$HOME/dotfiles/hypr/scripts/session/hyprlock.sh",
+	"tooltip": true,
+	"tooltip-format": "󰷛 Screen Lock",
+},
+
+"custom/menu": {
+	"format": "",
+	"menu": "on-click",
+	"menu-file": "/home/thui/dotfiles/waybar/menus/arch.xml",
+	"menu-actions": {
+		"applications": "pkill rofi || rofi -show drun -modi run,drun,filebrowser,window",
+		"wallpaper": "$HOME/dotfiles/hypr/scripts/wallpaper/wppicker.sh",
+		"lock": "$HOME/dotfiles/hypr/scripts/session/hyprlock.sh",
+		"suspend": "systemctl suspend",
+		"logout": "hyprctl dispatch exit",
+		"reboot": "systemctl reboot",
+		"poweroff": "systemctl poweroff"
+	},
+	"tooltip": true,
+	"tooltip-format": "Arch menu",
+},
+"image#power": {
+	"path": "/home/thui/dotfiles/icons/power.svg",
+	"size": 16,
+},
+
+"custom/swaync": {
+	"tooltip": true,
+	"tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
+	"format": "{icon}",
+	"format-icons": {
+		"notification": "󰒓<span foreground='#d1242f'><sup>•</sup></span>",
+		"none": "󰒓",
+		"dnd-notification": "󰒓<span foreground='#d1242f'><sup>•</sup></span>",
+		"dnd-none": "󰒓",
+		"inhibited-notification": "󰒓<span foreground='#d1242f'><sup>•</sup></span>",
+		"inhibited-none": "󰒓",
+		"dnd-inhibited-notification": "󰒓<span foreground='#d1242f'><sup>•</sup></span>",
+		"dnd-inhibited-none": "󰒓"
+	},
+	"return-type": "json",
+	"exec-if": "which swaync-client",
+	"exec": "swaync-client -swb",
+	"on-click": "sleep 0.1 && swaync-client -t -sw",
+	"on-click-right": "swaync-client -d -sw",
+	"escape": true,
+},
+// Separators used by the layouts.
+"custom/separator#dot-line": {
+	"format": "",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#line": {
+	"format": "|",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#blank": {
+	"format": "",
+	"interval": "once",
+	"tooltip": false
+},
+}

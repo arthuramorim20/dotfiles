@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child><object class="GtkMenuItem" id="shortcuts"><property name="label">Keyboard Shortcuts</property></object></child>
+    <child><object class="GtkSeparatorMenuItem"/></child>
+    <child><object class="GtkMenuItem" id="arch_wiki"><property name="label">Arch Wiki</property></object></child>
+    <child><object class="GtkMenuItem" id="hyprland_wiki"><property name="label">Hyprland Documentation</property></object></child>
+    <child><object class="GtkMenuItem" id="waybar_docs"><property name="label">Waybar Documentation</property></object></child>
+  </object>
+</interface>

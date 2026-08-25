@@ -1,7 +1,5 @@
 # Full Arch Linux setup: Hyprland desktop, packages, services, GTK dark mode.
 
-# --- XDG_CONFIG_HOME bootstrap (so apps read configs from ~/dotfiles) ------
-
 - name: Ensure ~/.config/environment.d exists
   ansible.builtin.file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d"
@@ -13,17 +11,15 @@
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/environment.d/dotfiles.conf"
     mode: "0644"
     content: |
-      XDG_CONFIG_HOME=${HOME}/dotfiles
       ZDOTDIR=${HOME}/dotfiles/zsh
 
-- name: Append XDG bootstrap to ~/.profile (for sh login shells / sddm)
+- name: Append ZDOTDIR bootstrap to ~/.profile (for sh login shells / sddm)
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['env']['HOME'] }}/.profile"
     create: true
     mode: "0644"
-    marker: "# {mark} dotfiles XDG bootstrap"
+    marker: "# {mark} dotfiles ZDOTDIR bootstrap"
     block: |
-      export XDG_CONFIG_HOME="$HOME/dotfiles"
       export ZDOTDIR="$HOME/dotfiles/zsh"
 
 # --- Arch-specific config symlinks (for apps started before XDG is set) ----
@@ -32,7 +28,6 @@
   ansible.builtin.stat:
     path: "{{ ansible_facts['user_dir'] }}/.config/{{ item }}"
   loop:
-    - cava
     - elephant
     - fastfetch
     - gtk-3.0
@@ -44,7 +39,8 @@
     - swaync
     - walker
     - waybar
-    - wlogout
+    - ulauncher
+    - systemd
   register: arch_config_dirs
 
 - name: Link Arch-specific ~/.config dirs
@@ -55,6 +51,66 @@
   loop: "{{ arch_config_dirs.results }}"
   when:
     - not item.stat.exists or item.stat.islnk
+
+- name: Link Arch-specific ~/.config files
+  ansible.builtin.file:
+    src: "{{ dotfiles_dir }}/kde/{{ item }}"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - dolphinrc
+    - kiorc
+    - mimeapps.list
+
+# --- SDDM login theme ----------------------------------------------------
+
+- name: Ensure custom SDDM theme directory exists
+  ansible.builtin.file:
+    path: /usr/share/sddm/themes/dotfiles-lock
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+  tags: sddm_theme
+
+- name: Install custom SDDM theme files
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/sddm/"
+    dest: /usr/share/sddm/themes/dotfiles-lock/
+    owner: root
+    group: root
+    mode: "0644"
+    directory_mode: "0755"
+  become: true
+  tags: sddm_theme
+
+- name: Install shared lock-screen assets for SDDM
+  ansible.builtin.copy:
+    src: "{{ dotfiles_dir }}/hyprlock/wallpapers/{{ item.src }}"
+    dest: "/usr/share/sddm/themes/dotfiles-lock/{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  tags: sddm_theme
+  loop:
+    - src: 16.jpeg
+      dest: background.jpeg
+    - src: me.jpeg
+      dest: avatar.jpeg
+
+- name: Select custom SDDM theme
+  community.general.ini_file:
+    path: /etc/sddm.conf
+    section: Theme
+    option: Current
+    value: dotfiles-lock
+    no_extra_spaces: true
+    mode: "0644"
+  become: true
+  tags: sddm_theme
 
 - name: Check if yay is installed
   ansible.builtin.command: command -v yay

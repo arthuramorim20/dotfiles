@@ -1,0 +1,11 @@
+@import url("/home/thui/.cache/ulauncher_cache/themes/dark/generated.css");
+
+@import url("theme.css");
+
+.input {
+    caret-color: #8ab4f8;
+}
+
+.selected.item-box {
+    border: none;
+}

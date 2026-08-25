@@ -20,4 +20,8 @@
 @define-color sidebar_fg_color @window_fg_color;
 @define-color sidebar_border_color @window_bg_color;
 @define-color sidebar_backdrop_color @window_bg_color;
-
+@define-color outline_color {{colors.outline.default.hex}};
+@define-color outline_variant_color {{colors.outline_variant.default.hex}};
+@define-color shadow_color {{colors.shadow.default.hex}};
+@define-color surface_container_color {{colors.surface_container.default.hex}};
+@define-color surface_container_high_color {{colors.surface_container_high.default.hex}};

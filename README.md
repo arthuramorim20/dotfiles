@@ -2,52 +2,62 @@
 
 Unified configuration for Arch Linux + Hyprland.
 
-The repo IS your `$XDG_CONFIG_HOME`. No `~/.config/<app>` symlinks — apps read
-straight from `~/dotfiles/<app>/`. Uses Matugen for color generation and
-hyprpaper for wallpapers.
+The repo contains your personal configuration sources. Applications keep their
+runtime data in the normal XDG locations; Ansible creates selective symlinks
+from `~/.config/<app>` into this repository. Uses Matugen for color generation
+and awww for wallpapers.
 
-## Layout
+## Organização
 
-```
-dotfiles/
-├── hypr/        ->  $XDG_CONFIG_HOME/hypr/
-├── hyprlock/    ->  $XDG_CONFIG_HOME/hyprlock/
-├── kitty/       ->  $XDG_CONFIG_HOME/kitty/
-├── waybar/      ->  $XDG_CONFIG_HOME/waybar/
-├── rofi/        ->  $XDG_CONFIG_HOME/rofi/
-├── swaync/      ->  $XDG_CONFIG_HOME/swaync/
-├── wlogout/     ->  $XDG_CONFIG_HOME/wlogout/
-├── cava/        ->  $XDG_CONFIG_HOME/cava/
-├── fastfetch/   ->  $XDG_CONFIG_HOME/fastfetch/
-├── matugen/     ->  $XDG_CONFIG_HOME/matugen/
-├── nvim/        ->  $XDG_CONFIG_HOME/nvim/
-├── tmux/        ->  $XDG_CONFIG_HOME/tmux/   (and ~/.tmux.conf fallback)
-├── zsh/         ->  $ZDOTDIR/                (.zshenv, .zshrc)
-├── wallpapers/
-└── install.sh   # bootstrap XDG_CONFIG_HOME, no per-app symlinks
-```
+Cada pasta de aplicativo permanece na raiz porque ela é ligada individualmente
+para `~/.config/<app>` pelo Ansible. Isso mantém a estrutura compatível com o
+XDG sem misturar caches, perfis e estados de aplicativos no repositório.
+
+- Desktop: `hypr/`, `hyprlock/`, `sddm/`, `waybar/`, `swaync/`, `rofi/`,
+  `walker/`, `elephant/` e `matugen/`.
+- Terminal/editor: `kitty/`, `tmux/`, `zsh/` e `nvim/`.
+- Aparência e aplicativos: `gtk-3.0/`, `gtk-4.0/`, `fastfetch/`, `ulauncher/`
+  e `kde/` (Dolphin, KIO e associações de arquivos).
+- Dados escolhidos pelo usuário: `wallpapers/` e `icons/`.
+- Automação: `ansible/`, `packages/` e `bootstrap.sh`.
+
+`waybar/README.md` e `hypr/README.md` documentam os arquivos ativos e os
+symlinks de seleção. Dados gerados e perfis de aplicativos ficam nos diretórios
+XDG normais do usuário, fora deste repositório; `wallpapers/current_image`
+continua sendo um symlink gerado dentro de `wallpapers/`.
 
 ## Install
 
 ```sh
-./install.sh              # dry-run (prints what would happen)
-./install.sh --apply      # bootstrap XDG_CONFIG_HOME and cleanup
-./install.sh --uninstall  # revert the bootstrap
+./bootstrap.sh            # install Ansible + run the playbook (applies everything)
+./bootstrap.sh --check    # install Ansible + dry-run (prints what would change)
 ```
 
-The installer:
+`bootstrap.sh` only bootstraps Ansible; the actual work lives in
+`ansible/playbook.yml`. After the first run you can re-apply directly with
+`ansible-playbook ansible/playbook.yml` (add `--check --diff` for a dry-run).
+
+The playbook:
 - Removes any old `~/.config/<app>` symlinks pointing into `~/dotfiles`
 - Writes `~/.config/environment.d/dotfiles.conf` (systemd user env, picked
   up by uwsm/Hyprland)
-- Appends `XDG_CONFIG_HOME` / `ZDOTDIR` exports to `~/.profile` (sddm and
+- Appends `ZDOTDIR` to `~/.profile` (sddm and
   sh-style logins)
 - Symlinks `~/.zshenv -> dotfiles/zsh/.zshenv` (zsh always reads it before
   anything else)
 - Symlinks `~/.tmux.conf -> dotfiles/tmux/tmux.conf` so tmux works even when
   launched without XDG set
+- Installs the `sddm/` login theme with the same wallpaper, avatar and element
+  placement used by `hyprlock/layouts/layout16.conf`
 
-After `--apply`, log out and back in so systemd/sddm pick up the new env.
-The single bootstrap file at `~/.config/environment.d/dotfiles.conf` is the
-only file kept under `~/.config/` — it has to live there because the systemd
-user manager reads `$XDG_CONFIG_HOME/environment.d/` and uses the default
-location until `XDG_CONFIG_HOME` itself is set.
+After the first run, log out and back in so systemd/sddm pick up the new env.
+The bootstrap file at `~/.config/environment.d/dotfiles.conf` keeps only the
+`ZDOTDIR` setting. The standard `~/.config` remains the runtime configuration
+root, so browser profiles and application caches stay outside this repository.
+
+Para atualizar somente o tema de login do SDDM, sem executar o restante do
+provisionamento:
+
+```sh
+ansible-playbook ansible/playbook.yml --ask-become-pass --tags sddm_theme
+```

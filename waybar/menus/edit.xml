@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child><object class="GtkMenuItem" id="undo"><property name="label">Undo</property></object></child>
+    <child><object class="GtkMenuItem" id="redo"><property name="label">Redo</property></object></child>
+    <child><object class="GtkSeparatorMenuItem"/></child>
+    <child><object class="GtkMenuItem" id="cut"><property name="label">Cut</property></object></child>
+    <child><object class="GtkMenuItem" id="copy"><property name="label">Copy</property></object></child>
+    <child><object class="GtkMenuItem" id="paste"><property name="label">Paste</property></object></child>
+    <child><object class="GtkMenuItem" id="select_all"><property name="label">Select All</property></object></child>
+  </object>
+</interface>

@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=Dotfiles Lock
+Description=SDDM login matching the Hyprlock layout
+Author=thui
+License=MIT
+Type=sddm-theme
+Version=1.0
+ConfigFile=theme.conf
+MainScript=Main.qml
+Theme-Id=dotfiles-lock
+Theme-API=2.0
+QtVersion=6

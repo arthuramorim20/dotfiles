@@ -1,0 +1,47 @@
+/* Upstream: https://github.com/JaKooLit */
+
+/* My Mostly Used waybar config incase you wonder :) */
+{
+"include": [
+  "$HOME/dotfiles/waybar/modules/base",
+  "$HOME/dotfiles/waybar/modules/workspaces",
+  "$HOME/dotfiles/waybar/modules/custom",
+  "$HOME/dotfiles/waybar/modules/groups",
+  ],
+"layer": "bottom",
+//"mode": "dock",
+"exclusive": true,
+"passthrough": false,
+"position": "top",
+"spacing": 3,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 5,
+"margin-left": 8,
+"margin-right": 8,
+
+"modules-left": [
+	//"idle_inhibitor",
+	//"custom/separator#blank",
+	"clock",
+	"custom/separator#blank",
+	"tray",
+        "custom/separator#blank",	
+        "hyprland/workspaces#alpha",
+	],
+
+"modules-center": [
+        "hyprland/window",
+	],
+
+"modules-right": [
+        //"mpris",
+        //"custom/separator#dot-line",
+        "group/notify",	
+	"battery",
+	"custom/separator#blank",  
+	"group/audio",
+	"custom/separator#blank",
+	"image#power",
+	],
+}

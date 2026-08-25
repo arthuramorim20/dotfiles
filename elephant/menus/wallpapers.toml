@@ -3,11 +3,11 @@ name_pretty = "Wallpapers"
 icon = "preferences-desktop-wallpaper"
 
 [[entries]]
-text = "wall-06.png"
-icon = "/home/thui/dotfiles/wallpapers/wall-06.png"
-actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/set-wallpaper.sh /home/thui/dotfiles/wallpapers/wall-06.png" }
+text = "macbookstyle.jpeg"
+icon = "/home/thui/dotfiles/wallpapers/macbookstyle.jpeg"
+actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/wallpaper/set-wallpaper.sh /home/thui/dotfiles/wallpapers/macbookstyle.jpeg" }
 
 [[entries]]
-text = "wall-05.png"
-icon = "/home/thui/dotfiles/wallpapers/wall-05.png"
-actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/set-wallpaper.sh /home/thui/dotfiles/wallpapers/wall-05.png" }
+text = "_.jpeg"
+icon = "/home/thui/dotfiles/wallpapers/_.jpeg"
+actions = { "apply" = "/home/thui/dotfiles/hypr/scripts/wallpaper/set-wallpaper.sh /home/thui/dotfiles/wallpapers/_.jpeg" }

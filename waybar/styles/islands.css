@@ -1,0 +1,222 @@
+/* macOS-like menu bar: compact, monochrome and edge-to-edge. */
+
+@define-color glass_text rgba(255, 255, 255, 0.94);
+@define-color glass_muted rgba(255, 255, 255, 0.58);
+@define-color glass_border rgba(255, 255, 255, 0.15);
+@define-color glass_hover rgba(255, 255, 255, 0.12);
+@define-color glass_shadow rgba(0, 0, 0, 0.38);
+
+* {
+    min-height: 0;
+    font-family: "Adwaita Sans", "JetBrainsMono Nerd Font Propo";
+    font-size: 12px;
+    font-weight: 400;
+}
+
+window#waybar {
+    color: rgba(255, 255, 255, 0.92);
+    background-color: rgba(7, 10, 14, 0.38);
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.08),
+        rgba(0, 0, 0, 0.12)
+    );
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    box-shadow: inset 0 -1px rgba(255, 255, 255, 0.05);
+}
+
+.modules-left {
+    padding-left: 5px;
+}
+
+.modules-center {
+    padding: 0;
+}
+
+.modules-right {
+    padding-right: 5px;
+}
+
+button {
+    color: rgba(255, 255, 255, 0.92);
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+button:hover,
+#custom-menu:hover,
+#custom-mac-file:hover,
+#custom-mac-edit:hover,
+#custom-mac-view:hover,
+#custom-mac-go:hover,
+#custom-mac-window:hover,
+#custom-mac-help:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#custom-keyboard:hover,
+#network:hover,
+#battery:hover,
+#custom-swaync:hover,
+#custom-spotlight:hover,
+#custom-mac-clock:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+#custom-menu {
+    color: rgba(255, 255, 255, 0.96);
+    font-family: "JetBrainsMono Nerd Font Propo";
+    font-size: 15px;
+    padding: 0 8px 0 5px;
+}
+
+#custom-active-app {
+    color: rgba(255, 255, 255, 0.96);
+    font-weight: 700;
+    padding: 0 8px 0 1px;
+}
+
+#custom-mac-file,
+#custom-mac-edit,
+#custom-mac-view,
+#custom-mac-go,
+#custom-mac-window,
+#custom-mac-help {
+    color: rgba(255, 255, 255, 0.90);
+    border-radius: 3px;
+    padding: 0 5px;
+}
+
+#bluetooth,
+#pulseaudio,
+#custom-keyboard,
+#network,
+#battery,
+#custom-swaync,
+#custom-spotlight,
+#custom-mac-clock {
+    color: rgba(255, 255, 255, 0.92);
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    margin: 1px 0;
+    padding: 0 5px;
+}
+
+#bluetooth,
+#pulseaudio,
+#network,
+#custom-swaync,
+#custom-spotlight {
+    font-family: "JetBrainsMono Nerd Font Propo";
+    font-size: 12px;
+}
+
+#custom-keyboard {
+    font-size: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#custom-mac-clock {
+    font-weight: 500;
+    padding-left: 7px;
+    padding-right: 4px;
+}
+
+#bluetooth.disabled,
+#bluetooth.off,
+#network.disconnected,
+#pulseaudio.muted {
+    color: rgba(255, 255, 255, 0.52);
+}
+
+#battery.charging,
+#battery.plugged {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+#battery.warning:not(.charging) {
+    color: #8a6300;
+}
+
+#battery.critical:not(.charging) {
+    color: #b4232c;
+}
+
+window.popup,
+popover,
+popover.background {
+    color: @glass_text;
+    background: transparent;
+}
+
+popover > contents,
+popover.background > contents,
+menu,
+tooltip,
+tooltip.background {
+    color: @glass_text;
+    background-color: rgba(9, 13, 19, 0.80);
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.09),
+        rgba(0, 0, 0, 0.08)
+    );
+    border: 1px solid @glass_border;
+    border-radius: 9px;
+    box-shadow: 0 10px 30px @glass_shadow;
+}
+
+popover > contents,
+popover.background > contents {
+    padding: 5px;
+}
+
+popover arrow {
+    color: rgba(9, 13, 19, 0.86);
+    background: rgba(9, 13, 19, 0.86);
+    border: 1px solid @glass_border;
+}
+
+tooltip,
+tooltip.background {
+    background-color: rgba(9, 13, 19, 0.88);
+    border-radius: 7px;
+    padding: 0;
+}
+
+tooltip label {
+    color: @glass_text;
+    padding: 5px 7px;
+}
+
+menu {
+    padding: 5px;
+}
+
+menuitem {
+    color: @glass_text;
+    background: transparent;
+    border-radius: 5px;
+    padding: 5px 20px;
+}
+
+menuitem:hover {
+    color: #ffffff;
+    background: #3478f6;
+}
+
+menuitem:disabled {
+    color: @glass_muted;
+}
+
+menu separator {
+    min-height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 4px 8px;
+}

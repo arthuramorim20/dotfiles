@@ -1,5 +1,5 @@
 [config.wallpaper]
-command = "~/dotfiles/hypr/scripts/set-wallpaper.sh"
+command = "~/dotfiles/hypr/scripts/wallpaper/set-wallpaper.sh"
 arguments = ["{{ image }}"]
 set = true
 
@@ -14,8 +14,8 @@ output_path = '~/dotfiles/kitty/colors.conf'
 post_hook = "kill -SIGUSR1 $(pidof kitty)"
 
 [templates.hyprland]
-input_path = '~/dotfiles/matugen/templates/hyprland-colors.conf'
-output_path = '~/dotfiles/hypr/colors.conf'
+input_path = '~/dotfiles/matugen/templates/hyprland-theme.lua'
+output_path = '~/dotfiles/hypr/theme.lua'
 post_hook = 'hyprctl reload'
 
 [templates.gtk3]
@@ -30,16 +30,10 @@ output_path = '~/dotfiles/gtk-4.0/colors.css'
 input_path = '~/dotfiles/matugen/templates/rofi-colors.rasi'
 output_path = '~/dotfiles/rofi/colors.rasi'
 
-[templates.cava]
-input_path = '~/dotfiles/matugen/templates/matugen-cava'
-output_path = '~/dotfiles/cava/config'
-post_hook = "pkill -USR1 cava"
-
 [templates.spicetify]
 input_path = '~/dotfiles/matugen/templates/spotify-colors.ini'
-output_path = '~/dotfiles/spicetify/Themes/text/color.ini'
+output_path = '~/spicetify/Themes/text/color.ini'
 
 [templates.vesktop]
 input_path = '~/dotfiles/matugen/templates/midnight-discord.css'
-output_path = '~/dotfiles/vesktop/themes/matugen.css'
-
+output_path = '~/vesktop/themes/matugen.css'

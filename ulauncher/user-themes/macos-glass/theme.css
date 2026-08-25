@@ -1,0 +1,119 @@
+@define-color glass_text rgba(255, 255, 255, .94);
+@define-color glass_muted rgba(255, 255, 255, .56);
+@define-color glass_border rgba(255, 255, 255, .15);
+@define-color glass_hover rgba(255, 255, 255, .09);
+@define-color glass_blue #3478f6;
+
+@keyframes reveal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.app {
+    color: @glass_text;
+    background-color: rgba(7, 10, 14, .52);
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, .09),
+        rgba(0, 0, 0, .10)
+    );
+    border: none;
+    border-radius: 14px;
+    box-shadow: none;
+    animation: reveal 160ms ease-out;
+}
+
+.no-window-shadow {
+    margin: -20px;
+}
+
+.input {
+    color: @glass_text;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .11);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: "Adwaita Sans";
+    font-size: 20px;
+    font-weight: 400;
+    padding: 15px 18px;
+}
+
+.input *:selected,
+.input *:focus,
+*:selected:focus {
+    color: #ffffff;
+    background: alpha(@glass_blue, .55);
+}
+
+.prefs-btn {
+    color: @glass_muted;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+.prefs-btn:hover {
+    color: @glass_text;
+    background: @glass_hover;
+}
+
+.item-box {
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    margin: 2px 7px;
+    padding: 7px 12px;
+}
+
+.item-box:hover {
+    background: @glass_hover;
+}
+
+.selected.item-box {
+    background: alpha(@glass_blue, .76);
+    border: 0;
+}
+
+.item-name,
+.selected.item-box .item-name {
+    color: @glass_text;
+    font-family: "Adwaita Sans";
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.item-text,
+.item-descr {
+    color: @glass_muted;
+    font-family: "Adwaita Sans";
+    font-size: 12px;
+}
+
+.selected.item-box .item-text,
+.selected.item-box .item-descr {
+    color: rgba(255, 255, 255, .78);
+}
+
+.item-shortcut,
+.selected.item-box .item-shortcut {
+    color: rgba(255, 255, 255, .62);
+    font-size: 11px;
+    text-shadow: none;
+}
+
+.item-icon {
+    padding-right: 11px;
+}
+
+tooltip,
+popover,
+menu {
+    color: @glass_text;
+    background-color: rgba(9, 13, 19, .86);
+    border: 1px solid @glass_border;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .38);
+}

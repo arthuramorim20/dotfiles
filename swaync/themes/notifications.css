@@ -1,8 +1,8 @@
-@define-color text            @inverse_surface;
-@define-color background-alt  @background;
-@define-color selected        @on_secondary;
-@define-color hover           @on_secondary_fixed_variant;
-@define-color urgent          @on_secondary_fixed;
+@define-color text            rgba(255, 255, 255, .94);
+@define-color background-alt  rgba(255, 255, 255, .08);
+@define-color selected        rgba(255, 255, 255, .14);
+@define-color hover           rgba(255, 255, 255, .20);
+@define-color urgent          #ff453a;
 
 * {
 
@@ -28,17 +28,18 @@
 }
 
 .floating-notifications.background .notification-row .notification-background {
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 8px 0 rgba(0,0,0,.6);
-  border: 1px solid @selected;
-  border-radius: 24px;
-  margin: 16px;
+  background-color: rgba(8, 12, 18, .58);
+  background-image: linear-gradient(to bottom, rgba(255,255,255,.08), rgba(0,0,0,.08));
+  box-shadow: 0 12px 32px rgba(0,0,0,.38);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px;
+  margin: 8px;
   padding: 0;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification {
   padding: 6px;
-  border-radius: 12px;
+  border-radius: 13px;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification.critical {
@@ -109,4 +110,3 @@
 .notification.normal progress {
   background-color: @hover;
 }
-

@@ -1,6 +1,12 @@
 -- MONITOR
 hl.monitor({ output = "HDMI-A-1", mode = "preferred", position = "0x0", scale = 1 })
 
+local palette = require("theme")
+
+local function alpha(color, opacity)
+	return "rgba(" .. color:gsub("^#", "") .. opacity .. ")"
+end
+
 -- AUTOSTART
 -- hl.exec_cmd no top-level só dispara em `hyprctl reload`, não no boot inicial.
 -- Por isso registramos os daemons em `hyprland.start`, que roda uma vez quando
@@ -12,8 +18,9 @@ end
 hl.on("hyprland.start", function()
 	once("elephant", "elephant") -- walker (wallpaper picker) data backend
 	once("nm-applet", "uwsm app -- nm-applet --indicator")
-	once("ulauncher", "uwsm app -- ulauncher --hide-window")
-	once("waybar", "uwsm app -- waybar")
+	-- Deixe uma única instância, supervisionada pelo serviço do pacote. Iniciar
+	-- também via `uwsm app` causa disputa pelo nome D-Bus e quebra o toggle.
+	hl.exec_cmd("systemctl --user start ulauncher.service")
 	-- awww (swww fork) — sem splash, IPC confiável.
 	once("awww-daemon", "awww-daemon")
 	hl.exec_cmd(
@@ -27,7 +34,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
 	once("hypridle", "uwsm app -- hypridle")
 	-- prime ~/.cache/kb_layout so waybar's custom/keyboard has a value at boot
-	hl.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/SwitchKeyboardLayout.sh --refresh")
+	hl.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/display/SwitchKeyboardLayout.sh --refresh")
 end)
 
 -- ENV
@@ -43,36 +50,36 @@ hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 -- LOOK AND FEEL
 hl.config({
 	general = {
-		gaps_in = 5,
-		gaps_out = 10,
-		border_size = 2,
+		gaps_in = 12,
+		gaps_out = 18,
+		border_size = 1,
 		col = {
-			active_border = "rgba(a08d86ff)",
-			inactive_border = "rgba(53433eff)",
+			active_border = alpha(palette.primary, "b8"),
+			inactive_border = alpha(palette.outline_variant, "80"),
 		},
-		resize_on_border = false,
+		resize_on_border = true,
 		allow_tearing = false,
 		layout = "dwindle",
 	},
 	decoration = {
-		rounding = 10,
-		rounding_power = 2,
+		rounding = 18,
+		rounding_power = 3.2,
 		active_opacity = 1.0,
-		inactive_opacity = 0.8,
+		inactive_opacity = 0.94,
 		shadow = {
-			enabled = false,
-			range = 4,
+			enabled = true,
+			range = 18,
 			render_power = 3,
-			color = "rgba(1a1a1aee)",
+			color = alpha(palette.shadow, "70"),
 		},
 		blur = {
 			enabled = true,
-			size = 5,
+			size = 8,
 			passes = 3,
 			ignore_opacity = true,
 			special = false,
 			popups = true,
-			xray = true,
+			xray = false,
 			vibrancy = 0.1696,
 		},
 	},
@@ -143,12 +150,12 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen())
 hl.bind("Print", hl.dsp.exec_cmd("screenshot"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("screenshot region"))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/wppicker.sh"))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/wallpaper/wppicker.sh"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar"))
 hl.bind(
 	mainMod .. " + T",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/SwitchKeyboardLayout.sh --toggle")
+	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/display/SwitchKeyboardLayout.sh --toggle")
 )
 
 -- Focus
@@ -187,17 +194,17 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Media keys
 hl.bind(
 	"XF86AudioRaiseVolume",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/volume.sh --inc"),
+		hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/audio/volume.sh --inc"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86AudioLowerVolume",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/volume.sh --dec"),
+		hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/audio/volume.sh --dec"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86AudioMute",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/volume.sh --toggle"),
+		hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/audio/volume.sh --toggle"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
@@ -207,12 +214,12 @@ hl.bind(
 )
 hl.bind(
 	"XF86MonBrightnessUp",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/brightness.sh --inc"),
+		hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/display/brightness.sh --inc"),
 	{ locked = true, repeating = true }
 )
 hl.bind(
 	"XF86MonBrightnessDown",
-	hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/brightness.sh --dec"),
+		hl.dsp.exec_cmd(os.getenv("HOME") .. "/dotfiles/hypr/scripts/display/brightness.sh --dec"),
 	{ locked = true, repeating = true }
 )
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })

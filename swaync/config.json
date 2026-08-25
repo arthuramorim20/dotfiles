@@ -58,12 +58,8 @@
       "buttons-grid": {
           "actions": [
               {
-                  "label": "󰐥",
-                  "command": "bash -c $HOME/dotfiles/hypr/scripts/Wlogout.sh"
-              },
-              {
                   "label": "󰌾",
-                  "command": "bash -c $HOME/dotfiles/hypr/scripts/hyprlock.sh"
+                  "command": "bash -c $HOME/dotfiles/hypr/scripts/session/hyprlock.sh"
               },
               {
                   "label": "󰍃",
@@ -71,7 +67,7 @@
               },
               {
                   "label": "󰀝",
-                  "command": "bash -c $HOME/dotfiles/hypr/scripts/AirplaneMode.sh"
+                  "command": "bash -c $HOME/dotfiles/hypr/scripts/display/AirplaneMode.sh"
               },
               {
                   "label": "󰝟",

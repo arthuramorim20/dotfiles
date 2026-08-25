@@ -31,7 +31,7 @@ setopt hist_verify
 # ─── Oh-My-Zsh ───────────────────────────────────────────────────────────────
 
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="fino"
+ZSH_THEME="agnoster"
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 source "$ZSH/oh-my-zsh.sh"
 
@@ -76,6 +76,17 @@ alias k=kubectl
 alias b=blackbox
 alias ls="eza --icons=always"
 alias cd="z"
+
+# ─── tmux ────────────────────────────────────────────────────────────────────
+alias ta="tmux attach"              # anexa à última sessão
+alias tat="tmux attach -t"          # anexa a uma sessão: tat <nome>
+alias tl="tmux ls"                  # lista as sessões
+alias tn="tmux new -s"              # cria sessão nomeada: tn <nome>
+alias tk="tmux kill-session -t"     # mata uma sessão: tk <nome>
+alias tnest="TMUX= tmux"            # força um tmux aninhado (ignora $TMUX)
+
+# Anexa à última sessão se houver, senão cria uma nova chamada "main".
+alias tt='tmux attach 2>/dev/null || tmux new -s main'
 
 # kitty-aware ssh (uses the kitty kitten when in a kitty terminal)
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"

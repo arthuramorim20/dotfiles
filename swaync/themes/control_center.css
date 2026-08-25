@@ -1,8 +1,8 @@
-@define-color text            @on_surface;
-@define-color background-alt  alpha(@color1, .4);
-@define-color selected        @outline;
-@define-color hover           alpha(@selected, 1);
-@define-color urgent          @error;
+@define-color text            rgba(255, 255, 255, .94);
+@define-color background-alt  rgba(255, 255, 255, .08);
+@define-color selected        rgba(255, 255, 255, .14);
+@define-color hover           rgba(255, 255, 255, .20);
+@define-color urgent          #ff453a;
 
 * {
   color:            @text;
@@ -22,20 +22,21 @@
 /* CONTROL CENTER ------------------------------------------------------------------------ */
 
 .control-center {
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 24px;
-  border: 1px solid @selected;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,.6);
-  margin: 18px;
-  padding: 12px;
+  background-color: rgba(8, 12, 18, .52);
+  background-image: linear-gradient(to bottom, rgba(255,255,255,.08), rgba(0,0,0,.08));
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 14px 38px rgba(0,0,0,.38);
+  margin: 8px;
+  padding: 10px;
 }
 
 /* Notifications  */
 .control-center .notification-row .notification-background,
 .control-center .notification-row .notification-background .notification.critical {
-  background-color: @on_secondary_fixed;
-  border: 1px solid @hover;
-  border-radius: 16px;
+  background-color: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
   margin: 4px 0px;
   padding: 4px;
 }
@@ -136,7 +137,7 @@ progressbar {
 }
 
 .widget-title button {
-  background: alpha(@hover, .50);
+  background: @background-alt;
   border-radius: 6px;
   padding: 4px 16px;
 }
@@ -156,7 +157,7 @@ progressbar {
 }
 
 .widget-dnd > switch {
-  background: alpha(@hover, .50);
+  background: @background-alt;
   font-size: initial;
   border-radius: 8px;
   box-shadow: none;
@@ -186,7 +187,8 @@ progressbar {
   padding: 6px 2px;
   margin: 6px;
   border-radius: 12px;
-  background: alpha(@hover, .50);
+  border: 1px solid rgba(255,255,255,.08);
+  background: @background-alt;
 }
 
 .widget-buttons-grid>flowbox>flowboxchild>button {
@@ -203,16 +205,17 @@ progressbar {
 
   /* Music player */
 .widget-mpris {
-    background: alpha(@hover, .50);
-    border-radius: 16px;
+    background: @background-alt;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
     color: @text;
     margin:  20px 6px;
 }
 
   /* NOTE: Background need *opacity 1* otherwise will turn into the album art blurred  */
 .widget-mpris-player {
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 14px;
+    background-color: rgba(0, 0, 0, .28);
+    border-radius: 10px;
     padding: 6px 14px;
     margin: 6px;
 }
@@ -253,4 +256,3 @@ progressbar {
   margin: 6px;
   border-radius: 6px;
 }
-

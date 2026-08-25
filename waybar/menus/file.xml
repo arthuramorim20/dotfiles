@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child><object class="GtkMenuItem" id="new_terminal"><property name="label">New Terminal</property></object></child>
+    <child><object class="GtkMenuItem" id="file_manager"><property name="label">Open File Manager…</property></object></child>
+    <child><object class="GtkMenuItem" id="applications"><property name="label">Open Applications…</property></object></child>
+    <child><object class="GtkSeparatorMenuItem"/></child>
+    <child><object class="GtkMenuItem" id="close_window"><property name="label">Close Window</property></object></child>
+  </object>
+</interface>

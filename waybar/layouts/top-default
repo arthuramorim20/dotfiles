@@ -1,0 +1,41 @@
+/* Layout ativo da Waybar. */
+{
+  "include": [
+    "$HOME/dotfiles/waybar/modules/base",
+    "$HOME/dotfiles/waybar/modules/workspaces",
+    "$HOME/dotfiles/waybar/modules/custom",
+    "$HOME/dotfiles/waybar/modules/groups"
+  ],
+  "layer": "top",
+  "exclusive": true,
+  "passthrough": false,
+  "position": "top",
+  "height": 26,
+  "spacing": 0,
+  "fixed-center": true,
+  "margin-top": 0,
+  "margin-bottom": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+  "modules-left": [
+    "custom/menu",
+    "custom/active-app",
+    "custom/mac-file",
+    "custom/mac-edit",
+    "custom/mac-view",
+    "custom/mac-go",
+    "custom/mac-window",
+    "custom/mac-help"
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "bluetooth",
+    "pulseaudio",
+    "custom/keyboard",
+    "network",
+    "battery",
+    "custom/swaync",
+    "custom/spotlight",
+    "custom/mac-clock"
+  ]
+}

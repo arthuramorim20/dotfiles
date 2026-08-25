@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child><object class="GtkMenuItem" id="fullscreen"><property name="label">Enter Full Screen</property></object></child>
+    <child><object class="GtkMenuItem" id="floating"><property name="label">Toggle Floating Window</property></object></child>
+    <child><object class="GtkMenuItem" id="center"><property name="label">Center Window</property></object></child>
+  </object>
+</interface>

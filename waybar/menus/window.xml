@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child><object class="GtkMenuItem" id="next_window"><property name="label">Next Window</property></object></child>
+    <child><object class="GtkMenuItem" id="previous_window"><property name="label">Previous Window</property></object></child>
+    <child><object class="GtkSeparatorMenuItem"/></child>
+    <child><object class="GtkMenuItem" id="move_previous"><property name="label">Move to Previous Workspace</property></object></child>
+    <child><object class="GtkMenuItem" id="move_next"><property name="label">Move to Next Workspace</property></object></child>
+    <child><object class="GtkSeparatorMenuItem"/></child>
+    <child><object class="GtkMenuItem" id="close_window"><property name="label">Close Window</property></object></child>
+  </object>
+</interface>

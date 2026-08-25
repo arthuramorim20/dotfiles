@@ -1,5 +1,5 @@
-require("saad.core")
-require("saad.lazy")
+require("carrot.core")
+require("carrot.lazy")
 
 -- Notify when entering/leaving macro recording so the active register is visible.
 local function notify_recording(action)
